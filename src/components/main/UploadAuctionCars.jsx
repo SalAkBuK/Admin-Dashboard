@@ -73,7 +73,7 @@ const AddCarForm = () => {
 
   return (
 
-    <div>
+    <div className='bg-[#1E223D]'>
 
       <Main/>
 

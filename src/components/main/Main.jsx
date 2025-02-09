@@ -17,10 +17,11 @@ const Main = () => {
   const isDashboard = location.pathname === '/dashboard';
 
   return (
-    <div className='flex flex-col md:flex-row bg-indigo-600 dark:bg-slate-950/50'>
+    <div >
+    <div className='flex flex-col md:flex-row bg-[#0A0D1C]'>
       <section className='w-auto md:w-[70%] h-full'>
         <div className='w-full flex items-center justify-between'>
-          <div className='text-indigo-950 m-4 font-bold text-xl md:text-2xl dark:text-transparent bg-clip-text bg-indigo-100 from-indigo-800 to-pink-800'>
+          <div className='text-indigo-950 m-4 font-bold text-xl md:text-2xl text-transparent bg-clip-text bg-indigo-100 from-indigo-800 to-pink-800'>
             Admin Portal
           </div>
         </div>
@@ -29,7 +30,7 @@ const Main = () => {
       
       </section>
       
-      <section className='w-full md:w-[30%] bg-indigo-200 dark:bg-slate-900/20 h-full'>
+      <section className='w-full md:w-[30%] bg-[#0A0D1C] h-full'>
         <div className='flex flex-col m-4'>
           <div className='hidden md:flex gap-4 items-center justify-end px-4 text-indigo-950 dark:text-slate-800'>
             <button
@@ -41,6 +42,7 @@ const Main = () => {
           </div>
         </div>
       </section>
+    </div>
     </div>
   );
 };

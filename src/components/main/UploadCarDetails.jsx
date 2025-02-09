@@ -5,7 +5,7 @@ import Main from './Main';
 
 function UploadCarDetails() {
   return (
-    <div>
+    <div className="bg-[#1E223D] w-full min-h-screen">
       <Main />
       <div className="flex items-center justify-center w-full max-w-4xl bg-[#0b213e] p-10 rounded-xl shadow-lg text-white ml-2 mt-2">
         <div className="space-y-4">

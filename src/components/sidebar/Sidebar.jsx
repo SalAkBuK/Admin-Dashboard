@@ -17,7 +17,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="h-screen bg-indigo-600 dark:bg-slate-950/50 shadow-lg">
+    <div className="h-screen bg-[#0A0D1C]  shadow-lg">
       <div className="flex flex-col gap-3 w-full text-slate-300 h-full justify-between">
         <div className="flex flex-col gap-10 px-4 mt-10">
           <div className="flex items-center justify-center gap-2">

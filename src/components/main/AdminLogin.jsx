@@ -38,8 +38,8 @@ function Login() {
   };
 
   return (
-    <div className="flex h-screen dark:bg-[#0C0C1D]">
-    <div className="hidden lg:flex w-1/2 dark:bg-[#0C0C1D] items-center justify-center">
+    <div className="flex h-screen bg-[#0C0C1D]">
+    <div className="hidden lg:flex w-1/2 bg-[#0C0C1D] items-center justify-center">
       <div className="text-center">
       <img src={logo} alt="AutoExperts Auctions" className="w-3/3 h-auto mb-20" />
       <div className="flex justify-between mt-8 text-white text-lg">

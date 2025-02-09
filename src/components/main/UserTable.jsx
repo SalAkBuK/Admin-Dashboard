@@ -41,12 +41,27 @@ function UserTable() {
     setSelectedUser(null);
   };
 
-  const handleDelete = (userId) => {
-    setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
+  const handleDelete = async (userId) => {
+    console.log("Attempting to delete user with ID:", userId); // Debugging
+  
+    try {
+      const response = await axios.delete(`http://167.99.228.40:5000/api/items/${userId}`);
+  
+      if (response.status === 200) {
+        // Remove from UI after successful deletion
+        setUsers((prevUsers) => prevUsers.filter((user) => user._id !== userId));
+        alert("User deleted successfully");
+      } else {
+        alert("Failed to delete user");
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      alert("Error deleting user");
+    }
   };
-
+  
   return (
-    <div>
+    <div className="bg-[#1E223D]">
   <Main />
 
   <div className="w-full max-w-4xl bg-[#0b213e] p-10 rounded-xl shadow-lg text-white ml-2 mt-2">
@@ -78,18 +93,13 @@ function UserTable() {
 
 
       <span className="flex justify-center gap-2">
-  <button 
-    onClick={() => handleEdit(user)} 
-    className="w-24 px-4 py-2 bg-blue-500 rounded-full text-white text-center font-medium hover:bg-blue-600"
-  >
-    Edit
-  </button>
-  <button 
-    onClick={() => handleDelete(user.id)} 
-    className="w-24 px-4 py-2 bg-red-500 rounded-full text-white text-center font-medium hover:bg-red-600"
-  >
-    Delete
-  </button>
+
+      <button 
+  onClick={() => handleDelete(user._id)}  // Use `_id`
+  className="w-24 px-4 py-2 bg-red-500 rounded-full text-white text-center font-medium hover:bg-red-600"
+>
+  Delete
+</button>
 </span>
 
     </div>

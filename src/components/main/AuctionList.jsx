@@ -132,7 +132,7 @@ function AuctionList() {
 
 
   return (
-    <div>
+    <div className='bg-[#1E223D]'>
       <Main />
 
       <div className="w-full max-w-5xl bg-[#0b213e] p-10 gap-10 rounded-xl shadow-lg text-white ml-2 mt-2">

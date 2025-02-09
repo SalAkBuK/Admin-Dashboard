@@ -95,9 +95,9 @@ const Form = () => {
   };
 
   return (
-    <div>
+    <div className="bg-[#0b213e] w-full min-h-screen">
       <Main/>
-      <section className="flex flex-col w-[90%] sm:w-[85%] overflow-auto">
+      <section className="flex flex-col w-[90%] sm:w-[100%] overflow-auto">
         <div className="bg-[#0b213e] min-h-screen flex flex-col justify-center items-center py-8">
 
 <form

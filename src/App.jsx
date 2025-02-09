@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Sidebar from './components/sidebar/Sidebar';
 import Main from './components/main/Main';
 import UserTable from './components/main/UserTable';
@@ -11,7 +11,6 @@ import UploadAuctionCars from './components/main/UploadAuctionCars';
 import AdminLogin from './components/main/AdminLogin';
 import PrivateRoute from './components/main/PrivateRoute';
 import UploadUsedCars from './components/main/UploadUsedCars';
-import TotalRevenueChart from './components/charts/TotalRevenueChart';
 const App = () => {
   return (
     <Router>
@@ -27,7 +26,7 @@ const AppContent = () => {
   const isLoginPage = location.pathname === '/login';
 
   return (
-    <div className="flex h-screen bg-white dark:bg-slate-900">
+    <div className="flex h-screen bg-black">
       {/* Render the sidebar only if it's not the login page */}
       {!isLoginPage && (
         <section className="w-[10%] sm:w-[15%]">
