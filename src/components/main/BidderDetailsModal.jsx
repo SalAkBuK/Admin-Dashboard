@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { XCircle, Mail, MapPin, Home, IdCard, Calendar, User, BadgeCheck } from 'lucide-react';
+import { XCircle, Mail, MapPin, Home, IdCard, Calendar, User, BadgeCheck, Phone  } from 'lucide-react';
 
 const BidderDetailsModal = ({ showModal, setShowModal, bidderDetails }) => {
   const backdropVariants = {
@@ -62,6 +62,11 @@ const BidderDetailsModal = ({ showModal, setShowModal, bidderDetails }) => {
                 <strong className="text-lg text-sky-400">CNIC:</strong> 
                 <span className="ml-2 text-gray-300">{bidderDetails.cnic}</span>
               </p>
+              <p className="flex items-center gap-2">
+      <Phone  className="text-sky-400" />
+      <strong className="text-lg text-sky-400">Phone:</strong>
+      <span className="ml-2 text-gray-300">{bidderDetails.number}</span>
+    </p>
               <p className="flex items-center gap-2">
                 <Calendar className="text-sky-400" />
                 <strong className="text-lg text-sky-400">Date of Birth:</strong> 

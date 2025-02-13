@@ -7,7 +7,7 @@ import socket from './socket'; // Assuming you have socket setup for real-time u
 import axios from 'axios';
 import BidderDetailsModal from './BidderDetailsModal';  // Import the modal component
 import { useNavigate } from 'react-router-dom';
-
+import { formatDateToPKT } from '../../../components/utils'; 
 
 function AuctionList() {
   const [auctions, setAuctions] = useState([]);
@@ -75,9 +75,10 @@ function AuctionList() {
   };
   
 
-  const handleEdit = (auction) => {
+  const handleEdit = (auctionId) => {
     // Open edit modal or handle edit logic
-    console.log('Edit auction:', auction);
+     navigate(`/update-auction-car-details/${auctionId}`)
+    console.log('Edit auction:', auctionId);
   };
 
   const handleDelete = async (auctionId) => {
@@ -132,145 +133,130 @@ function AuctionList() {
 
 
   return (
-    <div className='bg-[#1E223D]'>
-      <Main />
-
-      <div className="w-full max-w-5xl bg-[#0b213e] p-10 gap-10 rounded-xl shadow-lg text-white ml-2 mt-2">
-        <h2 className="text-lg font-semibold mb-4">Auction List</h2>
-
-        {/* Search bar */}
-        <div className="mb-4">
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={handleSearch}
-            placeholder="Search by title..."
-            className="w-full px-4 py-2 bg-[#394a6d] text-white rounded-md focus:outline-none"
-          />
+    <div className="w-full bg-[#1E223D] overflow-auto min-h-screen">
+    <Main />
+  
+    <div className="w-full bg-[#0b213e] p-10 gap-10 rounded-xl shadow-lg text-white ml-2 mt-2">
+      <h2 className="text-lg font-semibold mb-4">Auction List</h2>
+  
+      {/* Search bar */}
+      <div className="mb-4">
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={handleSearch}
+          placeholder="Search by title..."
+          className="w-full px-4 py-2 bg-[#394a6d] text-white rounded-md focus:outline-none"
+        />
+      </div>
+  
+      {/* Items per page dropdown */}
+      <div className="flex justify-between items-center mb-4">
+        <div>
+          <label className="mr-2">Show:</label>
+          <select
+            value={itemsPerPage}
+            onChange={handleItemsPerPageChange}
+            className="bg-[#394a6d] text-white px-2 py-1 rounded"
+          >
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+            <option value={30}>30</option>
+          </select>
         </div>
-
-        {/* Items per page dropdown */}
-        <div className="flex justify-between items-center mb-4">
-          <div>
-            <label className="mr-2">Show:</label>
-            <select
-              value={itemsPerPage}
-              onChange={handleItemsPerPageChange}
-              className="bg-[#394a6d] text-white px-2 py-1 rounded"
-            >
-              <option value={10}>10</option>
-              <option value={20}>20</option>
-              <option value={30}>30</option>
-            </select>
+      </div>
+  
+      {/* Table wrapper for responsiveness */}
+      <div className="overflow-x-auto w-full">
+        <div className="min-w-max md:min-w-full grid grid-cols-7 gap-4 font-semibold text-[#bfcde0] pl-1 pb-3 border-b border-[#394a6d] items-center">
+          <span className="text-center">Image</span>
+          <span className="text-center">Title</span>
+          <span className="text-center">Initial Bid</span>
+          <span className="text-center">Highest Bid</span>
+          <span className="text-center">End Time</span>
+          <span className="text-center">Top 3 Bids</span>
+          <span className="text-center">Status</span>
+        </div>
+  
+        {/* Auction rows */}
+        {paginatedAuctions.map((auction) => (
+          <div
+            key={auction._id}
+            className="grid grid-cols-7 gap-4 mt-3 py-2 items-center text-white rounded-lg bg-zinc-600 mb-2 min-w-max md:min-w-full whitespace-nowrap"
+          >
+            <div className="flex justify-center">
+              <img
+                src={auction.images[0] || auction.image || '/placeholder.jpg'}
+                alt={auction.title || 'No Title'}
+                className="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover"
+              />
+            </div>
+            <span className="text-center text-sm md:text-base">{auction.title || 'Unknown Title'}</span>
+            <span className="text-center text-sm md:text-base">Pkr. {auction.initialBid || 'N/A'}</span>
+            <span className="text-center text-sm md:text-base">
+              {auction.highestBid ? `Pkr. ${auction.highestBid.bidAmount}` : 'No bids yet'}
+            </span>
+            <span className="text-center text-sm md:text-base">{formatDateToPKT(auction.auctionEndTime) || 'No End Time'}</span>
+  
+            {/* Top 3 Bids Section */}
+            <div className="text-center text-xs md:text-sm">
+              {auction.topBids && auction.topBids.length > 0 ? (
+                <ul className="list-disc pl-3">
+                  {auction.topBids.slice(0, 3).map((bid, index) => (
+                    <li key={index} className="flex flex-col md:flex-row items-center space-x-2">
+                      <span className="text-xs md:text-sm">Pkr. {bid.bidAmount}</span>
+                      <span
+                        className="text-xs text-blue-500 truncate max-w-[100px] md:max-w-[150px] hover:underline cursor-pointer"
+                        title={bid.bidderId}
+                        onClick={() => handleBidderClick(bid.bidderId)}
+                      >
+                        {bid.bidderId ? `${bid.bidderId.slice(0, 8)}...` : 'Unknown'}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No top bids available</p>
+              )}
+            </div>
+  
+            {/* Status */}
+            <span className="text-center text-sm md:text-base">{auction.status || 'No Status'}</span>
+  
+            {/* Actions */}
+            <div className="flex gap-2 justify-center">
+              <FaEye onClick={() => handleViewDetails(auction._id)} className="cursor-pointer text-[#4b4cfe] hover:text-[#3738ff]" />
+              <FaEdit onClick={() => handleEdit(auction._id)} className="cursor-pointer text-[#4b4cfe] hover:text-[#3738ff]" />
+              <FaTrash onClick={() => handleDelete(auction._id)} className="cursor-pointer text-[#dc3545] hover:text-[#b52a38]" />
+            </div>
           </div>
-        </div>
-
-     {/* Table header */}
-<div className="grid grid-cols-7 gap-4 font-semibold text-[#bfcde0] pl-1 pb-3 border-b border-[#394a6d] items-center">
-  <span className="text-center">Image</span>
-  <span className="text-center">Title</span>
-  <span className="text-center">Initial Bid</span>
-  <span className="text-center">Highest Bid</span>
-  <span className="text-center">End Time</span>
-  <span className="text-center">Top 3 Bids</span>
-  <span className="text-center">Status</span>
-</div>
-
-{/* Auction rows */}
-{paginatedAuctions.map((auction) => (
-  <div
-    key={auction._id} // Assuming '_id' is the unique key for each auction
-    className="grid grid-cols-7 gap-4 mt-3 py-2 items-center text-white rounded-lg bg-zinc-600 mb-2"
-  >
-    <div className="flex justify-center">
-    <img
-  src={auction.images[0] || auction.image || '/placeholder.jpg'} // Fallback image
-  alt={auction.title || 'No Title'} // Fallback alt text
-  className="w-60 h-20 rounded-full pl-2" // Adjust width and height as needed (e.g., w-24 h-24 for 6rem x 6rem)
-  style={{ objectFit: 'cover' }} // Ensure image covers the container, maintaining aspect ratio
-/>
-
-    </div>
-    <span className="text-center">{auction.title || 'Unknown Title'}</span>
-    <span className="text-center">${auction.initialBid || 'N/A'}</span>
-    <span className="text-center">
-      {auction.highestBid ? `$${auction.highestBid.bidAmount}` : 'No bids yet'}
-    </span>
-    <span className="text-center">{auction.endTime || 'No End Time'}</span>
-
-    
- {/* Top 3 Bids Section */}
- <div className="text-center">
-        {auction.topBids && auction.topBids.length > 0 ? (
-          <ul className="list-disc pl-5">
-            {auction.topBids.slice(0, 3).map((bid, index) => (
-              <li key={index} className="flex items-center space-x-2">
-                <span className="text-sm">${bid.bidAmount}</span>
-                <span
-                  className="text-xs text-blue-500 truncate max-w-[150px] hover:underline cursor-pointer"
-                  title={bid.bidderId}
-                  onClick={() => handleBidderClick(bid.bidderId)} // Open modal on click
-                >
-                  {bid.bidderId ? `${bid.bidderId.slice(0, 8)}...` : 'Unknown'}
-                </span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No top bids available</p>
-        )}
+        ))}
       </div>
-
-
-    {/* Status */}
-    <span className="text-center">{auction.status || 'No Status'}</span>
-
-    {/* Action buttons */}
-    <div className="flex gap-4 justify-center">
-    <FaEye
-  onClick={() => handleViewDetails(auction._id)}
-  className="cursor-pointer text-[#4b4cfe] hover:text-[#3738ff]"
-/>
-
-      <FaEdit
-        onClick={() => handleEdit(auction)}
-        className="cursor-pointer text-[#4b4cfe] hover:text-[#3738ff]"
-      />
-      <FaTrash
-        onClick={() => handleDelete(auction._id)}
-        className="cursor-pointer text-[#dc3545] hover:text-[#b52a38]"
-      />
+  
+      {/* Pagination controls */}
+      <div className="flex justify-center mt-6">
+        {[...Array(totalPages)].map((_, index) => (
+          <button
+            key={index + 1}
+            onClick={() => handlePageChange(index + 1)}
+            className={`px-3 py-1 mx-1 rounded ${
+              currentPage === index + 1 ? 'bg-[#4b4cfe] text-white' : 'bg-[#394a6d] text-[#bfcde0]'
+            } hover:bg-[#3738ff]`}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
     </div>
+  
+    {/* Modal for displaying bidder details */}
+    {showModal && (
+      <BidderDetailsModal showModal={showModal} setShowModal={setShowModal} bidderDetails={modalData} />
+    )}
   </div>
-))}
-
-{/* Pagination controls */}
-<div className="flex justify-center mt-6">
-  {[...Array(totalPages)].map((_, index) => (
-    <button
-      key={index + 1}
-      onClick={() => handlePageChange(index + 1)}
-      className={`px-3 py-1 mx-1 rounded ${
-        currentPage === index + 1 ? 'bg-[#4b4cfe] text-white' : 'bg-[#394a6d] text-[#bfcde0]'
-      } hover:bg-[#3738ff]`}
-    >
-      {index + 1}
-    </button>
-  ))}
-</div>
-
-      </div>
-
-       {/* Modal for displaying bidder details */}
-       {showModal && (
-  <BidderDetailsModal
-    showModal={showModal}
-    setShowModal={setShowModal}
-    bidderDetails={modalData} // Pass modalData here
-  />
-)}
-
-    </div>
+  
+  
+  
 
 
 

@@ -72,11 +72,12 @@ function InspectionBookings() {
   
   const handleDelete = async (userId) => {
     try {
+      console.log("userId: ", userId)
       const response = await axios.delete(`http://167.99.228.40:5000/api/items/${userId}`);
   
       if (response.status === 200) {
         // Remove from UI after successful deletion
-        setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
+        setUsers((prevUsers) => prevUsers.filter((user) => user._id !== userId));
                 alert("User deleted successfully");
       } else {
         alert("Failed to delete user");
@@ -153,7 +154,7 @@ function InspectionBookings() {
       key={user.id} // still using the user.id for React key (but won't display it)
       user={{ ...user, id: undefined, time: user.formattedTime, formattedDate: user.formattedDate }} // Remove the id here
       onEdit={() => handleEdit(user)}
-      onDelete={() => handleDelete(user.id)}
+      onDelete={() => handleDelete(user._id)}
     />
   ))}
 </div>

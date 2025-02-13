@@ -93,7 +93,7 @@ function AuctionDetails() {
   <p><strong>Highest Bid:</strong> ${car.highestBid ? car.highestBid.bidAmount : 'N/A'}</p>
   <p><strong>Price:</strong> ${car.price}</p>
 
-  <p><strong>Auction End Time:</strong> {new Date(car.auctionEndTime).toLocaleString()}</p>
+  <p><strong> End Time:</strong> {new Date(car.auctionEndTime).toLocaleString()}</p>
 
   {/* PDF Link */}
   {car.pdfUrl && (

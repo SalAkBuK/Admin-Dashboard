@@ -1,48 +1,58 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { FaCar, FaUsers, FaDollarSign, FaChartLine } from 'react-icons/fa';
 
-const Main = () => {
+const Main = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleLogout = () => {  
-    // Clear the token from localStorage to log the user out
+  const handleLogout = () => {
     localStorage.removeItem('token');
-    
-    // Redirect the user to the login page
     navigate('/login');
   };
 
-  // Check if the current route is the dashboard
   const isDashboard = location.pathname === '/dashboard';
 
-  return (
-    <div >
-    <div className='flex flex-col md:flex-row bg-[#0A0D1C]'>
-      <section className='w-auto md:w-[70%] h-full'>
-        <div className='w-full flex items-center justify-between'>
-          <div className='text-indigo-950 m-4 font-bold text-xl md:text-2xl text-transparent bg-clip-text bg-indigo-100 from-indigo-800 to-pink-800'>
-            Admin Portal
-          </div>
-        </div>
+  // Dashboard Stats Data
+  const stats = [
+    { title: 'Total Cars', value: 40, icon: <FaCar className="text-white text-3xl" />, color: 'bg-blue-600' },
+    { title: 'Total Users', value: 7, icon: <FaUsers className="text-white text-3xl" />, color: 'bg-green-600' },
+    { title: 'Total Revenue', value: '30,000', icon: <FaDollarSign className="text-white text-3xl" />, color: 'bg-yellow-600' },
+    { title: 'Active Listings', value: 20, icon: <FaChartLine className="text-white text-3xl" />, color: 'bg-purple-600' },
+  ];
 
-        {/* Conditionally render the Total Revenue Chart */}
-      
-      </section>
-      
-      <section className='w-full md:w-[30%] bg-[#0A0D1C] h-full'>
-        <div className='flex flex-col m-4'>
-          <div className='hidden md:flex gap-4 items-center justify-end px-4 text-indigo-950 dark:text-slate-800'>
-            <button
-              onClick={handleLogout} // Trigger logout on button click
-              className="flex items-center px-4 py-2 rounded-full bg-blue-900 text-white text-bold shadow-sm hover:bg-blue-400 transition-colors"
-            >
-              Logout
-            </button>
-          </div>
+  return (
+    <div className=" bg-[#0A0D1C] text-white p-4 md:p-6">
+      {/* Header with Title & Logout */}
+      <div className='flex flex-col sm:flex-row justify-between items-center mb-6 gap-4'>
+        <h1 className='text-xl md:text-3xl font-bold bg-gradient-to-r from-indigo-500 to-pink-500 text-transparent bg-clip-text'>
+          Admin Portal
+        </h1>
+        <button
+          onClick={handleLogout}
+          className="px-4 py-2 rounded-full bg-blue-900 text-white shadow-md hover:bg-blue-700 transition-all w-full sm:w-auto"
+        >
+          Logout
+        </button>
+      </div>
+
+      {/* Show Dashboard Stats Only on /dashboard */}
+      {isDashboard ? (
+        <div className="bg-[#0A0D1C]  grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          {stats.map((stat, index) => (
+            <div key={index} className={`p-6 rounded-lg shadow-lg ${stat.color} flex items-center space-x-4`}>
+              <div className="p-4 rounded-full bg-white bg-opacity-20">{stat.icon}</div>
+              <div>
+                <h3 className="text-md sm:text-lg font-semibold">{stat.title}</h3>
+                <p className="text-xl sm:text-2xl font-bold">{stat.value}</p>
+              </div>
+            </div>
+          ))}
         </div>
-      </section>
-    </div>
+      ) : (
+        // Render Other Pages Here
+        <div className="mt-4">{children}</div>
+      )}
     </div>
   );
 };

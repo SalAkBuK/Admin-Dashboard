@@ -19,7 +19,7 @@ function UploadCarDetails() {
           <button className="px-8 py-3 rounded-full relative flex h-[50px] w-full max-w-xs items-center justify-center overflow-hidden bg-gray-800 text-white shadow-2xl transition-all before:absolute before:h-0 before:w-0 before:rounded-full before:bg-blue-600 before:duration-500 before:ease-out hover:shadow-red-400 hover:before:h-56 hover:before:w-60">
             <Link to="/upload-used-cars" className="relative z-10 flex items-center space-x-2">
               <FaCar className="text-xl mr-8" /> {/* Used car icon */}
-              <span>Used Cars List</span>
+              <span>Used Cars</span>
             </Link>
           </button>
         </div>

@@ -11,6 +11,10 @@ import UploadAuctionCars from './components/main/UploadAuctionCars';
 import AdminLogin from './components/main/AdminLogin';
 import PrivateRoute from './components/main/PrivateRoute';
 import UploadUsedCars from './components/main/UploadUsedCars';
+import ProductDetails from './components/main/ProductDetails';
+import UpdateProductForm from './components/main/UpdateProductForm';
+import UpdateAuctionProductForm from './components/main/UpdateAuctionProductForm';
+import UsedCarsList from './components/main/UsedCarsList';
 const App = () => {
   return (
     <Router>
@@ -26,14 +30,17 @@ const AppContent = () => {
   const isLoginPage = location.pathname === '/login';
 
   return (
-    <div className="flex h-screen bg-black">
-      {/* Render the sidebar only if it's not the login page */}
-      {!isLoginPage && (
-        <section className="w-[10%] sm:w-[15%]">
-          <Sidebar />
-        </section>
-      )}
-      <section className={`flex flex-col ${isLoginPage ? 'w-full' : 'w-[90%] sm:w-[85%]'} overflow-auto`}>
+    <div className="flex min-h-screen bg-black">
+  {/* Render the sidebar only if it's not the login page */}
+  {!isLoginPage && (
+    <section className="w-[10%] sm:w-[15%] h-full bg-gray-900">
+      <Sidebar />
+    </section>
+  )}
+  
+  <section 
+    className={`flex flex-col ${isLoginPage ? 'w-full' : 'w-[90%] sm:w-[85%]'} h-full overflow-y-auto`}
+  >
         <Routes>
           {/* Redirect root path to /login */}
           <Route path="/" element={<Navigate to="/login" />} />
@@ -50,6 +57,10 @@ const AppContent = () => {
             <Route path="/upload-car-details" element={<UploadCarDetails />} />
             <Route path="/upload-auction-cars" element={<UploadAuctionCars />} />
             <Route path="/upload-used-cars" element={<UploadUsedCars />}/>
+            <Route path="/used-cars" element={<UsedCarsList />}/>
+            <Route path="/used-car-details/:productId" element={<ProductDetails />} />
+            <Route path="/update-car-details/:productId" element={<UpdateProductForm />} />
+            <Route path="/update-auction-car-details/:auctionId" element={<UpdateAuctionProductForm/>} />
           </Route>
         </Routes>
       </section>

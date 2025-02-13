@@ -13,6 +13,7 @@ const AddCarForm = () => {
   const validationSchema = Yup.object().shape({
     carDetails: Yup.string().required('Car details are required'),
     auctionEndTime: Yup.string().required('Auction end time is required'),
+    highestExpectedBid: Yup.number().min(0, 'Highest expected bid must be 0 or greater').required('Highest expected bid is required'),
     initialBid: Yup.number().min(0, 'Initial bid must be 0 or greater').required('Initial bid is required'),
     title: Yup.string().required('Title is required'),
     model: Yup.string().required('Model is required'),
@@ -83,6 +84,7 @@ const AddCarForm = () => {
         carDetails: "",
         auctionEndTime: "",
         initialBid: "",
+        highestExpectedBid: "", 
         title: "",
         model: "",
         mileage: "",
@@ -110,7 +112,8 @@ const AddCarForm = () => {
             {[
               { label: "Car Details", name: "carDetails", type: "text" },
               { label: "Auction End Time", name: "auctionEndTime", type: "datetime-local" },
-              { label: "Initial Bid", name: "initialBid", type: "number" },
+              { label: "Base Price", name: "initialBid", type: "number" },
+              { label: "Highest Expected Bid", name: "highestExpectedBid", type: "number" },
               { label: "Title", name: "title", type: "text" },
               { label: "Model", name: "model", type: "text" },
               { label: "Mileage", name: "mileage", type: "number" },
